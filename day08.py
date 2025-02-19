@@ -1,59 +1,54 @@
-def pre_order(node):
-    if node is None:
-        return
-    print(node.data, end='-')
-    pre_order(node.left)
-    pre_order(node.right)
-
-
-def in_order(node):
-    if node is None:
-        return
-    in_order(node.left)
-    print(node.data, end='-')
-    in_order(node.right)
-
-
-def post_order(node):
-    if node is None:
-        return
-    post_order(node.left)
-    post_order(node.right)
-    print(node.data, end='-')
-
-
 class TreeNode:
 	def __init__(self):
 		self.left = None
 		self.data = None
 		self.right = None
 
-node1 = TreeNode()
-node1.data = 'hs'
 
-node2 = TreeNode()
-node2.data = 'sl'
-node1.left = node2
+if __name__ == "__main__":
+    numbers = [10, 15, 8, 3, 9]
+    root = None
 
-node3 = TreeNode()
-node3.data = 'mb'
-node1.right = node3
+    node = TreeNode()
+    node.data = numbers[0]
+    root = node
 
-node4 = TreeNode()
-node4.data = 'hw'
-node2.left = node4
+    for group in numbers[1:]:
+        node = TreeNode()
+        node.data = group
+        current = root
+        while True:
+            if group < current.data:
+                if current.left is None:
+                    current.left = node
+                    break
+                current = current.left  # move
+            else:
+                if current.right is None:
+                    current.right = node
+                    break
+                current = current.right  # move
 
-node5 = TreeNode()
-node5.data = 'zz'
-node2.right = node5
+    print("BST 구성 완료")
 
-node6 = TreeNode()
-node6.data = 'sm'
-node3.left = node6
+    find_group = int(input())
+
+    current = root
+    while True:
+        if find_group == current.data:
+            print(f"{find_group}을(를) 찾았습니다")
+            break
+        elif find_group < current.data:
+            if current.left is None:
+                print(f"{find_group}이(가) 존재하지 않습니다")
+                break
+            current = current.left
+        else:
+            if current.right is None:
+                print(f"{find_group}이(가) 존재하지 않습니다")
+                break
+            current = current.right
 
 
-post_order(node1)
-print()
-pre_order(node1)
-print()
-in_order(node1)
+
+
