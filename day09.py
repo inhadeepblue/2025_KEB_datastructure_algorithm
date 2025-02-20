@@ -5,46 +5,32 @@ class Graph:
 
 
 def print_graph(g) :
-    print(' ', end = ' ')
+    print(' ', end=' ')
     for v in range(g.SIZE) :
-        print(name_ary[v], end =' ')
+        print(name_ary[v], end=' ')
     print()
     for row in range(g.SIZE) :
-        print(name_ary[row], end =' ')
+        print(name_ary[row], end=' ')
         for col in range(g.SIZE) :
-            #print("%2d" % g.graph[row][col], end = ' ')
             print(f"{g.graph[row][col]:2}", end=' ')
         print()
     print()
 
 
-def find_vertex(g, find_vtx) -> bool:
-	stack = []
-	visited_ary = []
+def dfs(g, current, find_vtx, visited):
+    visited.append(current)
+    if current == find_vtx:
+        return True
+    for vertex in range(g.SIZE):
+        if g.graph[current][vertex] != 0 and vertex not in visited:
+            if dfs(g, vertex, find_vtx, visited):
+                return True
+    return False
 
-	current = 0
-	stack.append(current)
-	visited_ary.append(current)
 
-	while len(stack) != 0:
-		next = None
-		for vertex in range(g_size) :
-			if g.graph[current][vertex] != 0 :
-				if vertex in visited_ary :
-					pass
-				else :
-					next = vertex
-					break
-		if next is not None:
-			current = next
-			stack.append(current)
-			visited_ary.append(current)
-		else :
-			current = stack.pop()
-	if find_vtx in visited_ary :
-		return True
-	else :
-		return False
+def find_vertex(g, find_vtx):
+    visited = []
+    return dfs(g, 0, find_vtx, visited)
 
 
 G1 = None
@@ -72,8 +58,9 @@ for i in range(g_size) :
 print(edge_ary, len(edge_ary))
 
 # 가중치 순으로 목록 정렬 (내림차순)
-from operator import itemgetter
-edge_ary = sorted(edge_ary, key = itemgetter(0), reverse = True)
+# from operator import itemgetter
+# edge_ary = sorted(edge_ary, key = itemgetter(0), reverse = True)
+edge_ary.sort(reverse=True)
 
 print(edge_ary, len(edge_ary))
 
@@ -86,21 +73,21 @@ print(new_ary, len(new_ary))
 
 index = 0
 while len(new_ary) > g_size - 1:	# 간선의 개수가 '정점 개수-1'일 때까지 반복
-	start = new_ary[index][1]
-	end = new_ary[index][2]
-	saveCost = new_ary[index][0]
+    start = new_ary[index][1]
+    end = new_ary[index][2]
+    save_cost = new_ary[index][0]
 
-	G1.graph[start][end] = 0
-	G1.graph[end][start] = 0
+    G1.graph[start][end] = 0
+    G1.graph[end][start] = 0
 
-	startYN = find_vertex(G1, start)
-	endYN = find_vertex(G1, end)
+    startYN = find_vertex(G1, start)
+    endYN = find_vertex(G1, end)
 
-	if startYN and endYN :
-		del new_ary[index]
-	else :
-		G1.graph[start][end] = saveCost
-		G1.graph[end][start] = saveCost
-		index += 1
+    if startYN and endYN :
+        del new_ary[index]
+    else:
+        G1.graph[start][end] = save_cost
+        G1.graph[end][start] = save_cost
+        index += 1
 
 print_graph(G1)
