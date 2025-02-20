@@ -1,106 +1,106 @@
-class TreeNode:
-	def __init__(self):
-		self.left = None
-		self.data = None
-		self.right = None
+class Graph:
+	def __init__(self, size) :
+		self.SIZE = size
+		self.graph = [[0 for _ in range(size)] for _ in range(size)]
 
 
-def insert(root, value):
-    if root is None:
-        node = TreeNode()
-        node.data = value
-        return node
-
-    if value < root.data:
-        root.left = insert(root.left, value)
-    else:
-        root.right = insert(root.right, value)
-    return root
-
-
-def search(root, value):
-    current = root
-    while current:
-        if value == current.data:
-            return current
-        elif value < current.data:
-            current = current.left
-        else:
-            current = current.right
-    return None
+def print_graph(g) :
+    print(' ', end = ' ')
+    for v in range(g.SIZE) :
+        print(name_ary[v], end =' ')
+    print()
+    for row in range(g.SIZE) :
+        print(name_ary[row], end =' ')
+        for col in range(g.SIZE) :
+            #print("%2d" % g.graph[row][col], end = ' ')
+            print(f"{g.graph[row][col]:2}", end=' ')
+        print()
+    print()
 
 
-def post_order(node):
-    if node is None:
-        return
-    post_order(node.left)
-    post_order(node.right)
-    print(f"{node.data} ", end='')
+def find_vertex(g, find_vtx) -> bool:
+	stack = []
+	visited_ary = []
+
+	current = 0
+	stack.append(current)
+	visited_ary.append(current)
+
+	while len(stack) != 0:
+		next = None
+		for vertex in range(g_size) :
+			if g.graph[current][vertex] != 0 :
+				if vertex in visited_ary :
+					pass
+				else :
+					next = vertex
+					break
+		if next is not None:
+			current = next
+			stack.append(current)
+			visited_ary.append(current)
+		else :
+			current = stack.pop()
+	if find_vtx in visited_ary :
+		return True
+	else :
+		return False
 
 
-def delete(root, value):
-    if root is None:
-        return root
-    if value < root.data:
-        root.left = delete(root.left, value)
-    elif value > root.data:
-        root.right = delete(root.right, value)
-    else:
-        if root.left is None and root.right is None:
-            return None
-        elif root.left is None:
-            return root.right
-        elif root.right is None:
-            return root.left
-        else:  # 자식이 두 개인 경우
-            root.data = find_min(root.right).data
-            root.right = delete(root.right, root.data)
-    return root
+G1 = None
+name_ary = ['춘천', '서울', '속초', '대전', '광주', '부산']
+춘천, 서울, 속초, 대전, 광주, 부산 = 0, 1, 2, 3, 4, 5
 
+g_size = 6
+G1 = Graph(g_size)
+G1.graph[춘천][서울] = 10; G1.graph[춘천][속초] = 15
+G1.graph[서울][춘천] = 10; G1.graph[서울][속초] = 40; G1.graph[서울][대전] = 11; G1.graph[서울][광주] = 50
+G1.graph[속초][춘천] = 15; G1.graph[속초][서울] = 40; G1.graph[속초][대전] = 12
+G1.graph[대전][서울] = 11; G1.graph[대전][속초] = 12; G1.graph[대전][광주] = 20; G1.graph[대전][부산] = 30
+G1.graph[광주][서울] = 50; G1.graph[광주][대전] = 20; G1.graph[광주][부산] = 25
+G1.graph[부산][대전] = 30; G1.graph[부산][광주] = 25
 
-def find_min(node):
-    current = node
-    while current.left is not None:
-        current = current.left
-    return current
+print_graph(G1)
 
+# 간선 목록 만들기 [가중치, 시작도시, 도착도시]
+edge_ary = []
+for i in range(g_size) :
+	for k in range(g_size) :
+		if G1.graph[i][k] != 0 :
+			edge_ary.append([G1.graph[i][k], i, k])
 
-if __name__ == "__main__":
-    numbers = [10, 15, 8, 3, 9]
-    root = None
+print(edge_ary, len(edge_ary))
 
-    for number in numbers:
-        root = insert(root, number)
+# 가중치 순으로 목록 정렬 (내림차순)
+from operator import itemgetter
+edge_ary = sorted(edge_ary, key = itemgetter(0), reverse = True)
 
-    while True:
-        print("\n--- 트리 관리 메뉴 ---")
-        print("1. 값 삽입")
-        print("2. 값 삭제")
-        print("3. 값 찾기")
-        print("4. 트리 확인 (후위 오더)")
-        print("5. 종료")
-        choice = input("원하는 작업을 선택하세요: ")
-        if choice == '1':
-            value = int(input("삽입할 값을 입력하세요: "))
-            root = insert(root, value)
-            print(f"{value} 삽입 완료")
-        elif choice == '2':
-            value = int(input("삭제할 값을 입력하세요: "))
-            if search(root, value):
-                root = delete(root, value)
-                print(f"{value} 삭제 완료")
-            else:
-                print(f"{value}은(는) 트리에 존재하지 않습니다.")
-        elif choice == '3':
-            value = int(input("찾고 싶은 값을 입력하세요: "))
-            if search(root, value):
-                print(f"{value}을(를) 찾았습니다.")
-            else:
-                print(f"{value}이(가) 존재하지 않습니다.")
-        elif choice == '4':
-            post_order(root)
-        elif choice == '5':
-            print("프로그램을 종료합니다.")
-            break
-        else:
-            print("잘못된 선택입니다. 다시 선택하세요.")
+print(edge_ary, len(edge_ary))
+
+# 중복 간선 제거
+new_ary = []
+for i in range(0, len(edge_ary), 2) :
+	new_ary.append(edge_ary[i])
+
+print(new_ary, len(new_ary))
+
+index = 0
+while len(new_ary) > g_size - 1:	# 간선의 개수가 '정점 개수-1'일 때까지 반복
+	start = new_ary[index][1]
+	end = new_ary[index][2]
+	saveCost = new_ary[index][0]
+
+	G1.graph[start][end] = 0
+	G1.graph[end][start] = 0
+
+	startYN = find_vertex(G1, start)
+	endYN = find_vertex(G1, end)
+
+	if startYN and endYN :
+		del new_ary[index]
+	else :
+		G1.graph[start][end] = saveCost
+		G1.graph[end][start] = saveCost
+		index += 1
+
+print_graph(G1)
