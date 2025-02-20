@@ -1,3 +1,7 @@
+# Assignment
+# v4.2) v4.1 코드의 find_vertex 함수에 BFS를 적용하시오.
+from collections import deque
+
 class Graph:
 	def __init__(self, size) :
 		self.SIZE = size
@@ -17,20 +21,33 @@ def print_graph(g) :
     print()
 
 
-def dfs(g, current, find_vtx, visited):
-    visited.append(current)
-    if current == find_vtx:
-        return True
-    for vertex in range(g.SIZE):
-        if g.graph[current][vertex] != 0 and vertex not in visited:
-            if dfs(g, vertex, find_vtx, visited):
-                return True
-    return False
-
-
+"""
+def bfs(g, i, visited):
+    queue = deque([i])
+    visited[i] = 1
+    while queue:
+        #print(visited)
+        i = queue.popleft()
+        print(chr(ord('A') + i), end=' ')
+        for j in range(len(g)):
+            if g[i][j] == 1 and not visited[j]:
+                queue.append(j)
+                visited[j] = 1
+"""
 def find_vertex(g, find_vtx):
-    visited = []
-    return dfs(g, 0, find_vtx, visited)
+    visited = list()
+    queue = deque([0])
+    while queue:
+        current = queue.popleft()
+        if current in visited:
+            continue
+        visited.append(current)
+        if current == find_vtx:
+            return True
+        for vertex in range(g.SIZE):
+            if g.graph[current][vertex] != 0 and vertex not in visited:
+                queue.append(vertex)
+    return False
 
 
 G1 = None
