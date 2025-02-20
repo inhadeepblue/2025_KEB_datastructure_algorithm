@@ -6,43 +6,28 @@ class TreeNode:
 
 
 def insert(root, value):
-    new_node = TreeNode()
-    new_node.data = value
-
     if root is None:
-        return new_node
+        node = TreeNode()
+        node.data = value
+        return node
 
-    current = root
-    while True:
-        if value < current.data:
-            if current.left is None:
-                current.left = new_node
-                break
-            current = current.left  # move
-        else:
-            if current.right is None:
-                current.right = new_node
-                break
-            current = current.right  # move
+    if value < root.data:
+        root.left = insert(root.left, value)
+    else:
+        root.right = insert(root.right, value)
     return root
 
 
 def search(root, value):
     current = root
-    while True:
+    while current:
         if value == current.data:
-            print(f"{value}을(를) 찾았습니다")
-            break
+            return current
         elif value < current.data:
-            if current.left is None:
-                print(f"{value}이(가) 존재하지 않습니다")
-                break
             current = current.left
         else:
-            if current.right is None:
-                print(f"{value}이(가) 존재하지 않습니다")
-                break
             current = current.right
+    return None
 
 
 def post_order(node):
@@ -65,4 +50,7 @@ if __name__ == "__main__":
 
     print()
     find_number = int(input())
-    search(root, find_number)
+    if search(root, find_number):
+        print(f"{find_number}을(를) 찾았습니다")
+    else:
+        print(f"{find_number}이(가) 존재하지 않습니다")
