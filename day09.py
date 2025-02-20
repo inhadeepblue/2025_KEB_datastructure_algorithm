@@ -72,24 +72,35 @@ if __name__ == "__main__":
     for number in numbers:
         root = insert(root, number)
 
-    print("BST 구성 완료")
-    post_order(root)
-
-    print()
-    print(root.data)
-    # find_number = int(input())
-    # if search(root, find_number):
-    #     print(f"{find_number}을(를) 찾았습니다")
-    # else:
-    #     print(f"{find_number}이(가) 존재하지 않습니다")
-
-    delete_number = int(input())
-    if search(root, delete_number):
-        root = delete(root, delete_number)
-        print(f"{delete_number} 삭제 완료")
-    else:
-        print(f"{delete_number}은(는) 트리에 존재하지 않습니다.")
-
-    post_order(root)
-    print()
-    print(root.data)
+    while True:
+        print("\n--- 트리 관리 메뉴 ---")
+        print("1. 값 삽입")
+        print("2. 값 삭제")
+        print("3. 값 찾기")
+        print("4. 트리 확인 (후위 오더)")
+        print("5. 종료")
+        choice = input("원하는 작업을 선택하세요: ")
+        if choice == '1':
+            value = int(input("삽입할 값을 입력하세요: "))
+            root = insert(root, value)
+            print(f"{value} 삽입 완료")
+        elif choice == '2':
+            value = int(input("삭제할 값을 입력하세요: "))
+            if search(root, value):
+                root = delete(root, value)
+                print(f"{value} 삭제 완료")
+            else:
+                print(f"{value}은(는) 트리에 존재하지 않습니다.")
+        elif choice == '3':
+            value = int(input("찾고 싶은 값을 입력하세요: "))
+            if search(root, value):
+                print(f"{value}을(를) 찾았습니다.")
+            else:
+                print(f"{value}이(가) 존재하지 않습니다.")
+        elif choice == '4':
+            post_order(root)
+        elif choice == '5':
+            print("프로그램을 종료합니다.")
+            break
+        else:
+            print("잘못된 선택입니다. 다시 선택하세요.")
