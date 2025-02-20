@@ -28,7 +28,21 @@ def insert(root, value):
 
 
 def search(root, value):
-    pass
+    current = root
+    while True:
+        if value == current.data:
+            print(f"{value}을(를) 찾았습니다")
+            break
+        elif value < current.data:
+            if current.left is None:
+                print(f"{value}이(가) 존재하지 않습니다")
+                break
+            current = current.left
+        else:
+            if current.right is None:
+                print(f"{value}이(가) 존재하지 않습니다")
+                break
+            current = current.right
 
 
 def post_order(node):
@@ -49,25 +63,6 @@ if __name__ == "__main__":
     print("BST 구성 완료")
     post_order(root)
 
-
-    # find_group = int(input())
-    #
-    # current = root
-    # while True:
-    #     if find_group == current.data:
-    #         print(f"{find_group}을(를) 찾았습니다")
-    #         break
-    #     elif find_group < current.data:
-    #         if current.left is None:
-    #             print(f"{find_group}이(가) 존재하지 않습니다")
-    #             break
-    #         current = current.left
-    #     else:
-    #         if current.right is None:
-    #             print(f"{find_group}이(가) 존재하지 않습니다")
-    #             break
-    #         current = current.right
-
-
-
-
+    print()
+    find_number = int(input())
+    search(root, find_number)
