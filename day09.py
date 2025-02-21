@@ -42,6 +42,9 @@ def search(root, value):
 #     print(f"{node.data} ", end='')
 
 def bfs(node):
+    if node is None:
+        return
+
     queue = deque([node])
     while queue:
         current = queue.popleft()
