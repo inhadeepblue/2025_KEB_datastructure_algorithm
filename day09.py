@@ -1,5 +1,7 @@
 # Assignment
 # v4.4) v4.3 버전의 출력 방식을 너비 우선 탐색으로 수정하시오.
+from collections import deque
+
 class TreeNode:
 	def __init__(self):
 		self.left = None
@@ -32,12 +34,22 @@ def search(root, value):
     return None
 
 
-def post_order(node):
-    if node is None:
-        return
-    post_order(node.left)
-    post_order(node.right)
-    print(f"{node.data} ", end='')
+# def post_order(node):
+#     if node is None:
+#         return
+#     post_order(node.left)
+#     post_order(node.right)
+#     print(f"{node.data} ", end='')
+
+def bfs(node):
+    queue = deque([node])
+    while queue:
+        current = queue.popleft()
+        print(f"{current.data}", end=' ')
+        if current.left:
+            queue.append(current.left)
+        if current.right:
+            queue.append(current.right)
 
 
 def delete(root, value):
@@ -54,7 +66,7 @@ def delete(root, value):
             return root.right
         elif root.right is None:
             return root.left
-        else:  # 자식이 두 개인 경우
+        else:
             root.data = find_min(root.right).data
             root.right = delete(root.right, root.data)
     return root
@@ -79,7 +91,7 @@ if __name__ == "__main__":
         print("1. 값 삽입")
         print("2. 값 삭제")
         print("3. 값 찾기")
-        print("4. 트리 확인 (후위 오더)")
+        print("4. 트리 확인 (BFS)")
         print("5. 종료")
         choice = input("원하는 작업을 선택하세요: ")
         if choice == '1':
@@ -100,7 +112,7 @@ if __name__ == "__main__":
             else:
                 print(f"{value}이(가) 존재하지 않습니다.")
         elif choice == '4':
-            post_order(root)
+            bfs(root)
         elif choice == '5':
             print("프로그램을 종료합니다.")
             break
