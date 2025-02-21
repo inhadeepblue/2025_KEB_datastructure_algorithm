@@ -1,69 +1,16 @@
-import time
-import random
+# 요세푸스 1158, 큐
+from collections import deque  # 데크를 큐처럼 사용 (dequeue -> popleft, enqueue -> append, rotate)
 
-def time_decorator(func):
-    def wrapper(*arg):
-        s = time.time()
-        r = func(*arg)
-        e = time.time()
-        print(f'실행시간 : {e - s}초')
-        return r
-    return wrapper
+# 입력
+n, k = map(int, input().split())  # "7 3"
 
+# 알고리즘
+q = deque(range(1, n+1))  # 데크(큐) 객체 생성
+r = list()  # 사망자 순서를 저장할 리스트
 
-@time_decorator
-def insertion_sort(l):
-    for i in range(1, len(l)):
-        value = l[i]
-        while i > 0 and l[i-1] > value:
-            l[i] = l[i-1]
-            i = i - 1
-            #print(i, end=' ')
-        l[i] = value
-    return l
+while q:
+  q.rotate(-(k-1))
+  r.append(q.popleft())  # 큐의 dequeue 다음에 리스트에 리턴된 사망자 번호를 추가
 
-
-@time_decorator
-def bubble_sort(l):
-    for i in range(len(l) - 1):
-        no_swap = True
-        for j in range(len(l) - 1 - i):
-            if l[j] > l[j+1]:
-                l[j], l[j + 1] = l[j+1], l[j]
-                no_swap = False
-                #print(j, end=' ')
-        if no_swap:
-            return l
-    return l
-
-
-def quick_sort(l):
-    n = len(l)
-    if n<=1: return l
-    pivot = l[n//2]
-    left, mid, right = list(), list(), list()
-
-    for i in l:
-        if i < pivot:
-            left.append(i)
-        elif i > pivot:
-            right.append(i)
-        else:
-            mid.append(i)
-
-    return quick_sort(left)+mid+quick_sort(right)
-
-
-# lists = [4, 55, 55, 7, 55, 9, 11]
-# print(quick_sort(lists))
-
-lists1 = [random.randint(1, 100000) for _ in range(10000)]
-lists2 = lists1.copy()
-lists3 = lists1.copy()
-bubble_sort(lists1)
-insertion_sort(lists2)
-
-s = time.time()
-quick_sort(lists3)
-e = time.time()
-print(f'실행시간 : {e - s}초')
+# 출력
+print("<"+", ".join(map(str, r))+">")  # <3, 6, 2, 7, 5, 1, 4>
